@@ -1,10 +1,18 @@
 import React from 'react';
 
+import './assets/styles/global-style.scss';
+
+// CONTEXTS
+import { ThemeProvider } from './contexts/theme.context';
+
+// COMPONENTS
+import AuthPage from './pages/auth';
+
 const App: React.FC = () => {
 	return (
-		<div>
-			<h1>INICIAL</h1>
-		</div>
+		<ThemeProvider>
+			<AuthPage></AuthPage>
+		</ThemeProvider>
 	);
 };
 
