@@ -1,21 +1,32 @@
 import React from 'react';
+import styled from 'styled-components';
 
-// CONTEXTS
-import { useTheme } from '../../contexts/theme.context';
+// COMPONENTS
+import { Hero } from './components/hero';
+import { SignIn } from './components/signin';
 
-const AuthPage: React.FC = () => {
-	const { toggleTheme } = useTheme();
+const Root = styled.div`
+	width: 100vw;
+	height: 100vh;
 
-	const handleToggleTheme = () => {
-		toggleTheme();
-	};
+	display: flex;
+	justify-content: center;
+	align-items: center;
+`;
 
+export const AuthPage: React.FC = () => {
 	return (
 		<React.Fragment>
-			<h1>Auth Page</h1>
-			<button onClick={handleToggleTheme}>Toggle Theme</button>
+			<Root className="container">
+				<div className="row">
+					<div className="col-lg-6">
+						<Hero />
+					</div>
+					<div className="col-lg-6">
+						<SignIn />
+					</div>
+				</div>
+			</Root>
 		</React.Fragment>
 	);
 };
-
-export default AuthPage;

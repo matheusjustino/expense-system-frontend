@@ -1,31 +1,13 @@
 import React, { createContext, useContext, useState } from 'react';
+import { ThemeProvider as StyledProvider } from 'styled-components';
 
-interface Theme {
-	colors: {
-		background: string;
-		primary: {
-			main: string;
-			dark: string;
-			light: string;
-			text: string;
-		};
-		danger: {
-			main: string;
-			dark: string;
-			text: string;
-		};
-	};
-}
+// INTERFACES
+import { Theme } from '../interfaces/theme.interface';
 
 interface defaultThemeContext {
 	theme: Theme;
 	toggleTheme: () => void;
 }
-
-export const ThemeNames = {
-	light: 'light',
-	dark: 'dark',
-};
 
 const light: Theme = {
 	colors: {
@@ -44,8 +26,16 @@ const light: Theme = {
 	},
 };
 
+const dark: Theme = {
+	colors: {
+		...light.colors,
+		background: '#2a2a2a',
+	},
+};
+
 const allThemes = {
 	light,
+	dark,
 };
 
 const ThemeContext = createContext({} as defaultThemeContext);
@@ -53,7 +43,7 @@ const ThemeContext = createContext({} as defaultThemeContext);
 export const ThemeProvider: React.FC = ({ children }) => {
 	const [isLightTheme, setIsLightTheme] = useState(true);
 
-	const theme = isLightTheme ? allThemes['light'] : allThemes['light'];
+	const theme = isLightTheme ? allThemes['light'] : allThemes['dark'];
 
 	const toggleTheme = () => {
 		setIsLightTheme((isLightTheme) => !isLightTheme);
@@ -66,7 +56,7 @@ export const ThemeProvider: React.FC = ({ children }) => {
 
 	return (
 		<ThemeContext.Provider value={themeContext}>
-			{children}
+			<StyledProvider theme={theme}>{children}</StyledProvider>
 		</ThemeContext.Provider>
 	);
 };
