@@ -9,7 +9,7 @@ interface InputProps {
 
 export const Input: React.FC<InputProps> = ({ spanName, type }) => {
 	return (
-		<InputRoot className="input-group mb-3">
+		<InputRoot className="input-group mb-4">
 			<div className="input-group-prepend">
 				<Span
 					className="input-group-text"
@@ -27,6 +27,8 @@ const InputRoot = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+
+	padding: 0;
 `;
 
 const Span = styled.span`
@@ -34,8 +36,6 @@ const Span = styled.span`
 `;
 
 const InputWrapper = styled.input`
-	max-width: 19rem;
-
 	&:focus {
 		border-color: ${(props) => props.theme.colors.primary.main};
 		box-shadow: 0 0 0 0.05rem ${(props) => props.theme.colors.primary.main};

@@ -14,12 +14,13 @@ const GlobalStyle = createGlobalStyle`
 	html {
 		font-family: 'Poppins', sans-serif;
 		font-size: 100%;
-		color: ${(props: GlobalStyleProps) => props.theme.colors.background};
 		box-sizing: border-box;
+		color: ${(props: GlobalStyleProps) => props.theme.colors.text};
 	}
 
 	body {
 		margin: 0;
+		background: ${(props: GlobalStyleProps) => props.theme.colors.background};
 	}
 
 	* {

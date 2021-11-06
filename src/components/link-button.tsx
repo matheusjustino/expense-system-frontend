@@ -1,21 +1,7 @@
-import React, { SyntheticEvent } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-interface ButtonProps {
-	name: string;
-	onClick: (e: SyntheticEvent) => void;
-}
-
-export const Button: React.FC<ButtonProps> = ({ name, onClick }) => {
-	return (
-		<ButtonStyled onClick={onClick} className="btn">
-			{name}
-		</ButtonStyled>
-	);
-};
-
-const ButtonStyled = styled.button`
-	border: none;
+export const LinkButton = styled(Link)`
 	background: ${(props) => props.theme.colors.primary.main};
 	color: ${(props) => props.theme.colors.text} !important;
 

@@ -11,7 +11,8 @@ interface defaultThemeContext {
 
 const light: Theme = {
 	colors: {
-		background: '#fdfaf6',
+		background: '#f0f8fe',
+		text: '#f6f6f6',
 		primary: {
 			main: '#ffc107',
 			dark: '#c79100',

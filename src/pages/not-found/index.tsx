@@ -1,23 +1,19 @@
 import React from 'react';
-import styled from 'styled-components';
+
+// COMPONENTS
+import { Root } from './components/root';
+import { LinkButton } from '../../components/link-button';
+import { Error404 } from './components/error-404';
+import { ErrorMsg } from './components/error-message';
 
 export const PageNotFound: React.FC = () => {
 	return (
-		<Root>
-			<h2>PÁGINA NÃO ENCONTRADA</h2>
-			<h1>404</h1>
+		<Root className="container">
+			<Error404>Erro 404</Error404>
+			<ErrorMsg>Esta página possivelmente não existe mais.</ErrorMsg>
+			<LinkButton to="/" className="btn">
+				Ir para o início
+			</LinkButton>
 		</Root>
 	);
 };
-
-const Root = styled.div`
-	width: 100vw;
-	height: 100vh;
-
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
-
-	color: ${(props) => props.theme.colors.danger.main};
-`;

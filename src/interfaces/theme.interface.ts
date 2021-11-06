@@ -1,6 +1,7 @@
 export interface Theme {
 	colors: {
 		background: string;
+		text: string;
 		primary: {
 			main: string;
 			dark: string;
