@@ -9,4 +9,4 @@ namespace: argocd
 images:
 - name: matheusjustino/expense-system-react-app
   newName: matheusjustino/expense-system-react-app
-  newTag: f9448a4e0cb9684626df19c79ec6cde8a25abf5d
+  newTag: ad87bef8b98c29ddbd105c713cf9bff44bf4ce96
