@@ -4,7 +4,7 @@ resources:
 - deployment.yaml
 - service.yaml
 
-namespace: argocd
+namespace: expense-system
 
 images:
 - name: matheusjustino/expense-system-react-app
