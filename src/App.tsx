@@ -6,14 +6,12 @@ import GlobalStyleComposed from './assets/styles/global-style';
 import { ThemeProvider } from './contexts/theme.context';
 
 // COMPONENTS
-import { AuthPage } from './pages/sign-in';
 import { Routes } from './routes/router';
 
 const App: React.FC = () => {
 	return (
 		<ThemeProvider>
 			<GlobalStyleComposed />
-			{/* <AuthPage></AuthPage> */}
 			<Routes />
 		</ThemeProvider>
 	);
