@@ -6,8 +6,8 @@ spec:
   selector:
     app: react-app
   ports:
-  - port: 80
+  - port: 3000
     targetPort: 80
     protocol: TCP
-    # nodePort: 3000
+    name: http
   type: LoadBalancer
