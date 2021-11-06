@@ -8,6 +8,6 @@ spec:
   ports:
   - port: 80
     targetPort: 80
-    protocol: TPC
+    protocol: TCP
     # nodePort: 3000
   type: LoadBalancer
