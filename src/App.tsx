@@ -4,6 +4,7 @@ import GlobalStyleComposed from './assets/styles/global-style';
 
 // CONTEXTS
 import { ThemeProvider } from './contexts/theme.context';
+import { AuthProvider } from './contexts/auth.context';
 
 // COMPONENTS
 import { Routes } from './routes/router';
@@ -11,8 +12,10 @@ import { Routes } from './routes/router';
 const App: React.FC = () => {
 	return (
 		<ThemeProvider>
-			<GlobalStyleComposed />
-			<Routes />
+			<AuthProvider>
+				<GlobalStyleComposed />
+				<Routes />
+			</AuthProvider>
 		</ThemeProvider>
 	);
 };

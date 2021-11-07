@@ -4,6 +4,9 @@ import { ThemeProvider as StyledProvider } from 'styled-components';
 // INTERFACES
 import { Theme } from '../interfaces/theme.interface';
 
+// ENUMS
+import { ThemeNames } from '../enums/theme-names.enum';
+
 interface defaultThemeContext {
 	theme: Theme;
 	toggleTheme: () => void;
@@ -44,7 +47,9 @@ const ThemeContext = createContext({} as defaultThemeContext);
 export const ThemeProvider: React.FC = ({ children }) => {
 	const [isLightTheme, setIsLightTheme] = useState(true);
 
-	const theme = isLightTheme ? allThemes['light'] : allThemes['dark'];
+	const theme = isLightTheme
+		? allThemes[ThemeNames.LIGHT]
+		: allThemes[ThemeNames.LIGHT];
 
 	const toggleTheme = () => {
 		setIsLightTheme((isLightTheme) => !isLightTheme);

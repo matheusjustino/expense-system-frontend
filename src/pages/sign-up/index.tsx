@@ -3,28 +3,27 @@ import styled from 'styled-components';
 
 // COMPONENTS
 import { Hero } from '../../components/hero';
-import { SignInForm } from './components/signin-form';
+import { SignUpForm } from './components/signup-form';
 
 // IMAGES
-import HeroImg from '../../assets/images/undraw_wallet.svg';
+import HeroImg from '../../assets/images/undraw_make_it_rain.svg';
 
-export const SignInPage: React.FC = () => {
+export const SignUpPage: React.FC = () => {
 	return (
-		<SignInPageRoot className="container">
+		<SignUpRoot className="container">
 			<div className="row">
 				<div className="col-lg-6">
 					<Hero img={HeroImg} />
 				</div>
-
 				<div className="col-lg-6">
-					<SignInForm />
+					<SignUpForm />
 				</div>
 			</div>
-		</SignInPageRoot>
+		</SignUpRoot>
 	);
 };
 
-const SignInPageRoot = styled.div`
+const SignUpRoot = styled.div`
 	width: 100vw;
 	height: 100vh;
 

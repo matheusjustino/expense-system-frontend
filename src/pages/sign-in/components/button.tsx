@@ -1,9 +1,9 @@
-import React, { SyntheticEvent } from 'react';
+import React, { MouseEvent } from 'react';
 import styled from 'styled-components';
 
 interface ButtonProps {
 	name: string;
-	onClick: (e: SyntheticEvent) => void;
+	onClick: (e: MouseEvent<HTMLButtonElement>) => Promise<void> | void;
 }
 
 export const Button: React.FC<ButtonProps> = ({ name, onClick }) => {
