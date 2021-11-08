@@ -1,10 +1,18 @@
 version: '3.7'
 
 services:
-    app:
+    frontend:
         container_name: expense-system-frontend
         build:
             dockerfile: Dockerfile
             context: .
+        depends_on:
+            - revproxy
+        # ports:
+        #     - '3000:80'
+    revproxy:
+        build:
+            dockerfile: Dockerfile
+            context: ./.nginx
         ports:
-            - '3000:80'
+            - '80:80'

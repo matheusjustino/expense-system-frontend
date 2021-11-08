@@ -27,7 +27,7 @@ export const Input: React.FC<InputProps> = ({
 	}, []);
 
 	return (
-		<div className="mb-3">
+		<Root className="mb-3">
 			<InputRoot className="input-group">
 				<div className="input-group-prepend">
 					<Span
@@ -45,9 +45,14 @@ export const Input: React.FC<InputProps> = ({
 				/>
 			</InputRoot>
 			{errorMessage ? <SpanError>{errorMessage}</SpanError> : null}
-		</div>
+		</Root>
 	);
 };
+
+const Root = styled.div`
+	padding-left: 0;
+	padding-right: 0;
+`;
 
 const InputRoot = styled.div`
 	display: flex;
