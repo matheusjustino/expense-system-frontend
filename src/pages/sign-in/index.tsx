@@ -1,7 +1,7 @@
 import React from 'react';
-import styled from 'styled-components';
 
 // COMPONENTS
+import { SignInPageRoot } from './components/signin-page-root';
 import { Hero } from '../../components/hero';
 import { SignInForm } from './components/signin-form';
 
@@ -23,12 +23,3 @@ export const SignInPage: React.FC = () => {
 		</SignInPageRoot>
 	);
 };
-
-const SignInPageRoot = styled.div`
-	width: 100vw;
-	height: 100vh;
-
-	display: flex;
-	justify-content: center;
-	align-items: center;
-`;

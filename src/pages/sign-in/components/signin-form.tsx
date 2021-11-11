@@ -1,4 +1,11 @@
-import React, { MouseEvent, ChangeEvent, useState } from 'react';
+import React, {
+	MouseEvent,
+	ChangeEvent,
+	useState,
+	useRef,
+	useEffect,
+} from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 // CONTEXT
@@ -16,28 +23,24 @@ import { LinkButton } from '../../../components/link-button';
 export const SignInForm: React.FC = () => {
 	const buildLoginForm = (): Login => {
 		return {
-			email: '',
-			password: '',
+			email: 'a@a.com',
+			password: '123',
 		} as Login;
 	};
 
-	const buildErrors = (data?: {
-		email?: string;
-		password?: string;
-		valid?: boolean;
-	}) => {
-		return {
-			email: (data && data.email) || '',
-			password: (data && data.password) || '',
-			valid: (data && data.valid) || false,
-		};
-	};
-
 	const [loginForm, setLoginForm] = useState<Login>(buildLoginForm());
-	const [inputError, setInputErrors] = useState(buildErrors());
+	const isMounted = useRef(true);
+	const navigate = useNavigate();
 
 	const { signIn } = useAuth();
-	let errors = buildErrors();
+
+	useEffect(() => {
+		if (isMounted.current) {
+			return () => {
+				isMounted.current = false;
+			};
+		}
+	}, []);
 
 	const setEmail = (e: ChangeEvent<HTMLInputElement>): void => {
 		setLoginForm((prevState) => {
@@ -58,32 +61,17 @@ export const SignInForm: React.FC = () => {
 	};
 
 	const verifyInputs = (): boolean => {
-		errors = buildErrors({
-			...errors,
-			valid: true,
-		});
-
 		if (!!!loginForm.email) {
 			console.log('campo email vazio');
-			errors = buildErrors({
-				...errors,
-				email: 'Inválido',
-				valid: false,
-			});
+			return false;
 		}
 
 		if (!!!loginForm.password) {
 			console.log('campo password vazio');
-			errors = buildErrors({
-				...errors,
-				password: 'Inválido',
-				valid: false,
-			});
+			return false;
 		}
 
-		console.log(errors);
-
-		return errors.valid;
+		return true;
 	};
 
 	const handleSubmit = async (
@@ -93,13 +81,12 @@ export const SignInForm: React.FC = () => {
 
 		if (!verifyInputs()) {
 			console.log('form com problema');
-			setInputErrors(errors);
 			return;
 		}
 
 		await signIn(loginForm);
-		errors = buildErrors();
 		setLoginForm(buildLoginForm());
+		navigate('/dashboard');
 		console.log('form enviado');
 	};
 
@@ -114,7 +101,6 @@ export const SignInForm: React.FC = () => {
 						onChange={setEmail}
 						spanName="Email"
 						type="email"
-						errorMessage={inputError.email}
 					/>
 				</Row>
 				<Row className="row">
@@ -123,7 +109,6 @@ export const SignInForm: React.FC = () => {
 						onChange={setPassword}
 						spanName="Senha"
 						type="password"
-						errorMessage={inputError.email}
 					/>
 				</Row>
 

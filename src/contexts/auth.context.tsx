@@ -50,6 +50,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
 		if (apiResult) {
 			localStorage.setItem(LocalStorageKeys.USER_TOKEN, 'usertoken');
+			localStorage.setItem(
+				LocalStorageKeys.USER,
+				JSON.stringify(apiResult),
+			);
 			setUser(apiResult);
 		}
 	};
@@ -64,8 +68,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 			...data,
 			id: `${usersMock.length + 1}`,
 		});
-
-		console.log(usersMock);
 	};
 
 	const authProviderData: AuthContextData = {
