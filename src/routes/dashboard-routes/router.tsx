@@ -8,7 +8,7 @@ export const DashboardRoutes = () => {
 	return (
 		<Switch>
 			<Route path="/dashboard" element={<DashboardPage />}></Route>
-			<Route path="*" element={<PageNotFound />} />
+			<Route path="*" element={<PageNotFound to="/dashboard" />} />
 		</Switch>
 	);
 };
