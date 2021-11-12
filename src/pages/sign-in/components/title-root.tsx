@@ -7,5 +7,5 @@ export const TitleRoot = styled.div`
 
 	font-weight: bold;
 
-	color: ${(props) => props.theme.colors.primary.main};
+	color: ${(props) => props.theme.colors.primary};
 `;

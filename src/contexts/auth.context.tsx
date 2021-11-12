@@ -1,4 +1,10 @@
-import React, { createContext, ReactNode, useContext, useState } from 'react';
+import React, {
+	createContext,
+	ReactNode,
+	useContext,
+	useEffect,
+	useState,
+} from 'react';
 
 // ENUMS
 import { LocalStorageKeys } from '../enums/local-storage-keys.enum';
@@ -22,15 +28,15 @@ interface AuthProviderProps {
 const usersMock: User[] = [
 	{
 		id: '1',
-		firstName: 'A',
-		lastName: 'A',
+		firstName: 'Matheus',
+		lastName: 'Henrique',
 		email: 'a@a.com',
 		password: '123',
 	},
 	{
 		id: '2',
-		firstName: 'B',
-		lastName: 'B',
+		firstName: 'Fernandes',
+		lastName: 'Justino',
 		email: 'b@b.com',
 		password: '123',
 	},
@@ -42,6 +48,15 @@ export const AuthContext = createContext<AuthContextData>(
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 	const [user, setUser] = useState<User | null>(null);
+
+	useEffect(() => {
+		if (!user) {
+			const localUser = localStorage.getItem(LocalStorageKeys.USER);
+			if (localUser) {
+				setUser(JSON.parse(localUser));
+			}
+		}
+	}, []);
 
 	const signIn = async (data: Login): Promise<void> => {
 		const apiResult = await usersMock.find((user) => {

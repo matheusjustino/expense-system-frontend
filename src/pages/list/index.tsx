@@ -7,7 +7,7 @@ import { Container } from './styles';
 import { ContentHeader } from '../../components/content-header';
 import { SelectInput } from '../../components/select-input';
 
-export const DashboardPage: React.FC = () => {
+export const ListPage: React.FC = () => {
 	const options = [
 		{
 			value: 'Janeiro',
@@ -25,7 +25,8 @@ export const DashboardPage: React.FC = () => {
 
 	return (
 		<Container>
-			<ContentHeader title="Dashboard" lineColor="#f7931b">
+			<ContentHeader title="Saídas" lineColor="#e44c4e">
+				{/* #e44c4e #f7931b*/}
 				<SelectInput options={options} />
 			</ContentHeader>
 		</Container>

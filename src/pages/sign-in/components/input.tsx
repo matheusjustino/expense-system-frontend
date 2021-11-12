@@ -56,7 +56,7 @@ const Span = styled.span`
 
 const InputWrapper = styled.input`
 	&:focus {
-		border-color: ${(props) => props.theme.colors.primary.main};
-		box-shadow: 0 0 0 0.05rem ${(props) => props.theme.colors.primary.main};
+		border-color: ${(props) => props.theme.colors.primary};
+		box-shadow: 0 0 0 0.05rem ${(props) => props.theme.colors.primary};
 	}
 `;
