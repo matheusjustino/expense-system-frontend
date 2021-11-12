@@ -9,5 +9,5 @@ export const Root = styled.div`
 	align-items: center;
 	flex-direction: column;
 
-	color: ${(props) => props.theme.colors.danger.dark};
+	color: ${(props) => props.theme.colors.warning};
 `;

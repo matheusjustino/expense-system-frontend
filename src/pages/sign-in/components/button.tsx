@@ -1,9 +1,9 @@
-import React, { SyntheticEvent } from 'react';
+import React, { MouseEvent } from 'react';
 import styled from 'styled-components';
 
 interface ButtonProps {
 	name: string;
-	onClick: (e: SyntheticEvent) => void;
+	onClick: (e: MouseEvent<HTMLButtonElement>) => Promise<void> | void;
 }
 
 export const Button: React.FC<ButtonProps> = ({ name, onClick }) => {
@@ -16,16 +16,20 @@ export const Button: React.FC<ButtonProps> = ({ name, onClick }) => {
 
 const ButtonStyled = styled.button`
 	border: none;
-	background: ${(props) => props.theme.colors.primary.main};
-	color: ${(props) => props.theme.colors.text} !important;
+	background: ${(props) => props.theme.colors.info};
+	color: ${(props) => props.theme.colors.primary};
+
+	transition: filter 0.2s;
 
 	&:hover {
-		background: ${(props) => props.theme.colors.primary.dark};
+		/* opacity: 0.9; */
+		filter: brightness(70%);
+		color: ${(props) => props.theme.colors.primary};
 	}
 
 	&:focus {
-		background: ${(props) => props.theme.colors.primary.dark};
-		border-color: ${(props) => props.theme.colors.primary.dark};
-		box-shadow: 0 0 0 0.05rem ${(props) => props.theme.colors.primary.dark};
+		background: ${(props) => props.theme.colors.info};
+		border-color: ${(props) => props.theme.colors.info};
+		box-shadow: 0 0 0 0.05rem ${(props) => props.theme.colors.info};
 	}
 `;

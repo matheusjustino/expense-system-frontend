@@ -1,31 +1,25 @@
 import React from 'react';
-import styled from 'styled-components';
 
 // COMPONENTS
-import { Hero } from './components/hero';
+import { SignInPageRoot } from './components/signin-page-root';
+import { Hero } from '../../components/hero';
 import { SignInForm } from './components/signin-form';
 
-export const AuthPage: React.FC = () => {
+// IMAGES
+import HeroImg from '../../assets/images/undraw_wallet.svg';
+
+export const SignInPage: React.FC = () => {
 	return (
-		<AuthPageRoot className="container">
+		<SignInPageRoot className="container">
 			<div className="row">
 				<div className="col-lg-6">
-					<Hero />
+					<Hero img={HeroImg} />
 				</div>
 
 				<div className="col-lg-6">
 					<SignInForm />
 				</div>
 			</div>
-		</AuthPageRoot>
+		</SignInPageRoot>
 	);
 };
-
-const AuthPageRoot = styled.div`
-	width: 100vw;
-	height: 100vh;
-
-	display: flex;
-	justify-content: center;
-	align-items: center;
-`;

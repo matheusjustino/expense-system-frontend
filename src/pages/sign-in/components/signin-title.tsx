@@ -20,4 +20,6 @@ export const SignInTitle: React.FC<SignInTitle> = ({ text, size }) => {
 
 const Root = styled(TitleRoot)`
 	margin-bottom: 2.5rem;
+
+	color: ${(props) => props.theme.colors.info};
 `;

@@ -1,27 +1,46 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, ChangeEvent } from 'react';
 import styled from 'styled-components';
 
 interface InputProps {
 	spanName: string;
 	type: string;
+	onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+	value: string | number;
 	children?: ReactNode;
 }
 
-export const Input: React.FC<InputProps> = ({ spanName, type }) => {
+export const Input: React.FC<InputProps> = ({
+	spanName,
+	type,
+	onChange,
+	value,
+}) => {
 	return (
-		<InputRoot className="input-group mb-4">
-			<div className="input-group-prepend">
-				<Span
-					className="input-group-text"
-					id="inputGroup-sizing-default"
-				>
-					{spanName}
-				</Span>
-			</div>
-			<InputWrapper type={type} className="form-control" />
-		</InputRoot>
+		<Root className="mb-3">
+			<InputRoot className="input-group">
+				<div className="input-group-prepend">
+					<Span
+						className="input-group-text"
+						id="inputGroup-sizing-default"
+					>
+						{spanName}
+					</Span>
+				</div>
+				<InputWrapper
+					value={value}
+					onChange={onChange}
+					type={type}
+					className="form-control"
+				/>
+			</InputRoot>
+		</Root>
 	);
 };
+
+const Root = styled.div`
+	padding-left: 0;
+	padding-right: 0;
+`;
 
 const InputRoot = styled.div`
 	display: flex;
@@ -32,12 +51,16 @@ const InputRoot = styled.div`
 `;
 
 const Span = styled.span`
-	min-width: 5rem;
+	min-width: 6.875rem;
+
+	background-color: ${(props) => props.theme.colors.info};
+	color: ${(props) => props.theme.colors.primary};
+	border-color: ${(props) => props.theme.colors.info};
 `;
 
 const InputWrapper = styled.input`
 	&:focus {
-		border-color: ${(props) => props.theme.colors.primary.main};
-		box-shadow: 0 0 0 0.05rem ${(props) => props.theme.colors.primary.main};
+		border-color: ${(props) => props.theme.colors.info};
+		box-shadow: 0 0 0 0.05rem ${(props) => props.theme.colors.info};
 	}
 `;

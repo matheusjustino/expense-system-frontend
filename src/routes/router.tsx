@@ -1,16 +1,26 @@
-import { BrowserRouter, Routes as Switch, Route } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
+
+// CONTEXT
+import { useAuth } from '../contexts/auth.context';
+
+// ENUMS
+import { LocalStorageKeys } from '../enums/local-storage-keys.enum';
 
 // COMPONENTS
-import { AuthPage } from '../pages/sign-in';
-import { PageNotFound } from '../pages/not-found';
+import { DashboardRoutes } from './dashboard-routes/router';
+import { AuthRoutes } from './auth-routes/router';
 
 export const Routes = () => {
+	const { user } = useAuth();
+
+	const isAuthenticated = () => {
+		const userLocalStorage = !!localStorage.getItem(LocalStorageKeys.USER);
+		return !!user || userLocalStorage;
+	};
+
 	return (
 		<BrowserRouter>
-			<Switch>
-				<Route path="/" element={<AuthPage />} />
-				<Route path="*" element={<PageNotFound />} />
-			</Switch>
+			{isAuthenticated() ? <DashboardRoutes /> : <AuthRoutes />}
 		</BrowserRouter>
 	);
 };

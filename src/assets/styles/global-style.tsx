@@ -1,30 +1,29 @@
 import React from 'react';
 import { createGlobalStyle } from 'styled-components';
 
-// INTERFACES
-import { Theme } from '../../interfaces/theme.interface';
-
 import './global-style.scss';
 
-interface GlobalStyleProps {
-	theme: Theme;
-}
-
 const GlobalStyle = createGlobalStyle`
-	html {
-		font-family: 'Poppins', sans-serif;
-		font-size: 100%;
-		box-sizing: border-box;
-		color: ${(props: GlobalStyleProps) => props.theme.colors.text};
-	}
-
-	body {
-		margin: 0;
-		background: ${(props: GlobalStyleProps) => props.theme.colors.background};
-	}
-
 	* {
-		font-size: 1rem;
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+	}
+
+	html, body, #root {
+		height: 100%;
+
+		background-color: ${(props) => props.theme.colors.primary};
+	}
+
+	*, button, input {
+		border: 0;
+		outline: 0;
+		font-family: 'Roboto', sans-serif;
+	}
+
+	button {
+		cursor: pointer;
 	}
 `;
 
