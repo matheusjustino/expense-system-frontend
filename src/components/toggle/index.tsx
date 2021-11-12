@@ -7,7 +7,7 @@ import { useTheme } from '../../contexts/theme.context';
 import { Container, ToggleLabel, ToggleSelector } from './styles';
 
 export const Toggle: React.FC = () => {
-	const [checked, setChecked] = useState<boolean>(true);
+	const [checked, setChecked] = useState<boolean>(false);
 	const { toggleTheme } = useTheme();
 
 	const handleSwitch = () => {

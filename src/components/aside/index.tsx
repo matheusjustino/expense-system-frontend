@@ -9,7 +9,7 @@ import {
 // LOGO
 import logoImg from '../../assets/images/logo.svg';
 
-// COMPONENTS
+// STYLES
 import {
 	Container,
 	Header,
@@ -17,9 +17,14 @@ import {
 	Title,
 	MenuContainer,
 	MenuItemLink,
+	MenuItemButton,
 } from './styles';
 
 export const Aside: React.FC = () => {
+	const handleExitApp = () => {
+		localStorage.clear();
+	};
+
 	return (
 		<Container>
 			<Header>
@@ -43,10 +48,10 @@ export const Aside: React.FC = () => {
 					Saidas
 				</MenuItemLink>
 
-				<MenuItemLink to="/dashboard">
+				<MenuItemButton href="/" onClick={handleExitApp}>
 					<MdExitToApp />
 					Sair
-				</MenuItemLink>
+				</MenuItemButton>
 			</MenuContainer>
 		</Container>
 	);

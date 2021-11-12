@@ -16,16 +16,20 @@ export const Button: React.FC<ButtonProps> = ({ name, onClick }) => {
 
 const ButtonStyled = styled.button`
 	border: none;
-	background: ${(props) => props.theme.colors.primary};
-	color: ${(props) => props.theme.colors.primary} !important;
+	background: ${(props) => props.theme.colors.info};
+	color: ${(props) => props.theme.colors.primary};
+
+	transition: filter 0.2s;
 
 	&:hover {
-		background: ${(props) => props.theme.colors.primary};
+		/* opacity: 0.9; */
+		filter: brightness(70%);
+		color: ${(props) => props.theme.colors.primary};
 	}
 
 	&:focus {
-		background: ${(props) => props.theme.colors.primary};
-		border-color: ${(props) => props.theme.colors.primary};
-		box-shadow: 0 0 0 0.05rem ${(props) => props.theme.colors.primary};
+		background: ${(props) => props.theme.colors.info};
+		border-color: ${(props) => props.theme.colors.info};
+		box-shadow: 0 0 0 0.05rem ${(props) => props.theme.colors.info};
 	}
 `;

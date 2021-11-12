@@ -52,11 +52,15 @@ const InputRoot = styled.div`
 
 const Span = styled.span`
 	min-width: 6.875rem;
+
+	background-color: ${(props) => props.theme.colors.info};
+	color: ${(props) => props.theme.colors.primary};
+	border-color: ${(props) => props.theme.colors.info};
 `;
 
 const InputWrapper = styled.input`
 	&:focus {
-		border-color: ${(props) => props.theme.colors.primary};
-		box-shadow: 0 0 0 0.05rem ${(props) => props.theme.colors.primary};
+		border-color: ${(props) => props.theme.colors.info};
+		box-shadow: 0 0 0 0.05rem ${(props) => props.theme.colors.info};
 	}
 `;

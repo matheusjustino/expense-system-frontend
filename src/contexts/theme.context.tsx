@@ -23,7 +23,7 @@ const allThemes = {
 const ThemeContext = createContext({} as defaultThemeContext);
 
 export const ThemeProvider: React.FC = ({ children }) => {
-	const [isLightTheme, setIsLightTheme] = useState(false);
+	const [isLightTheme, setIsLightTheme] = useState(true);
 
 	const theme = isLightTheme
 		? allThemes[ThemeNames.LIGHT]

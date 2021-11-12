@@ -20,4 +20,6 @@ export const AuthFormTitle: React.FC<AuthFormTitleProps> = ({ text, size }) => {
 
 const Root = styled(TitleRoot)`
 	margin-bottom: 1.5rem;
+
+	color: ${(props) => props.theme.colors.info};
 `;

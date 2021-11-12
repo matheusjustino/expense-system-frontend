@@ -55,3 +55,25 @@ export const MenuItemLink = styled(Link)`
 		margin-right: 0.5rem;
 	}
 `;
+
+export const MenuItemButton = styled.a`
+	display: flex;
+	align-items: center;
+
+	color: ${(props) => props.theme.colors.info};
+	text-decoration: none;
+
+	margin: 0.5rem 0;
+
+	transition: opacity 0.3s;
+
+	&:hover {
+		color: ${(props) => props.theme.colors.info};
+		opacity: 0.7;
+	}
+
+	> svg {
+		font-size: 1.25rem;
+		margin-right: 0.5rem;
+	}
+`;
