@@ -74,8 +74,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 	};
 
 	const signOut = (): void => {
+		localStorage.clear();
 		setUser(null);
-		localStorage.removeItem(LocalStorageKeys.USER_TOKEN);
 	};
 
 	const register = async (data: Register): Promise<void> => {
