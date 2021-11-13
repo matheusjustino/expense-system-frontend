@@ -11,7 +11,7 @@ export const DashboardRoutes = () => {
 		<Layout>
 			<Switch>
 				<Route path="/dashboard" element={<DashboardPage />}></Route>
-				<Route path="/dashboard/list" element={<ListPage />}></Route>
+				<Route path="/list/:type" element={<ListPage />}></Route>
 				<Route path="*" element={<PageNotFound to="/dashboard" />} />
 			</Switch>
 		</Layout>

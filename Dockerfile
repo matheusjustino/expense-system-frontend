@@ -1,5 +1,5 @@
 # Stage 1 - the build process
-FROM node:16.13.0-alpine3.14 as builder
+FROM node:17.1.0-alpine3.14 as builder
 
 # Create app directory
 WORKDIR /app

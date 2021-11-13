@@ -1,19 +1,23 @@
+// ENUMS
 import { ThemeNames } from '../../../enums/theme-names.enum';
-import { ThemeV2 } from '../../../interfaces/theme.interface';
+import { DarkColors } from '../../../enums/dark-colors.enum';
 
-export const DarkTheme: ThemeV2 = {
+// INTERFACES
+import { Theme } from '../../../interfaces/theme.interface';
+
+export const DarkTheme: Theme = {
 	title: ThemeNames.DARK,
 	colors: {
-		primary: '#1b1f38',
-		secondary: '#252a48',
-		tertiary: '#313862',
+		primary: DarkColors.PRIMARY,
+		secondary: DarkColors.SECONDARY,
+		tertiary: DarkColors.TERTIARY,
 
-		white: '#fff',
-		black: '#000',
-		gray: '#bfbfbf',
+		white: DarkColors.WHITE,
+		black: DarkColors.BLACK,
+		gray: DarkColors.GRAY,
 
-		success: '#4e41f0',
-		info: '#f7931b',
-		warning: '#e44c4e',
+		success: DarkColors.SUCCESS,
+		info: DarkColors.INFO,
+		warning: DarkColors.WARNING,
 	},
 };
