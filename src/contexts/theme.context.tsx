@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState } from 'react';
 import { ThemeProvider as StyledProvider } from 'styled-components';
 
 // INTERFACES
-import { ThemeV2 } from '../interfaces/theme.interface';
+import { Theme } from '../interfaces/theme.interface';
 
 // ENUMS
 import { ThemeNames } from '../enums/theme-names.enum';
@@ -11,7 +11,7 @@ import { ThemeNames } from '../enums/theme-names.enum';
 import { DarkTheme, LightTheme } from '../assets/styles/themes';
 
 interface defaultThemeContext {
-	theme: ThemeV2;
+	theme: Theme;
 	toggleTheme: () => void;
 }
 

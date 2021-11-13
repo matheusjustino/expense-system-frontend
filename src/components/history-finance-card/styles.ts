@@ -12,7 +12,7 @@ export const Container = styled.li`
 
 	list-style: none;
 
-	border-radius: 0.5rem;
+	border-radius: 0.625rem;
 
 	margin: 0.625rem 0;
 	padding: 0.75rem 0.625rem;
@@ -34,6 +34,11 @@ export const Container = styled.li`
 		justify-content: space-between;
 
 		padding-left: 0.625rem;
+
+		span {
+			font-size: 1.375rem;
+			font-weight: 500;
+		}
 	}
 `;
 

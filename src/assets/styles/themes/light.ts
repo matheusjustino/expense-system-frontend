@@ -1,19 +1,23 @@
+// ENUMS
 import { ThemeNames } from '../../../enums/theme-names.enum';
-import { ThemeV2 } from '../../../interfaces/theme.interface';
+import { LightColors } from '../../../enums/light-colors.enum';
 
-export const LightTheme: ThemeV2 = {
+// INTERFACES
+import { Theme } from '../../../interfaces/theme.interface';
+
+export const LightTheme: Theme = {
 	title: ThemeNames.LIGHT,
 	colors: {
-		primary: '#dcdcdc',
-		secondary: '#ffffff',
-		tertiary: '#f5f5f5',
+		primary: LightColors.PRIMARY,
+		secondary: LightColors.SECONDARY,
+		tertiary: LightColors.TERTIARY,
 
-		white: '#000',
-		black: '#fff',
-		gray: '#bfbfbf',
+		white: LightColors.WHITE,
+		black: LightColors.BLACK,
+		gray: LightColors.GRAY,
 
-		success: '#03bb85',
-		info: '#3b5998',
-		warning: '#ff6961',
+		success: LightColors.SUCCESS,
+		info: LightColors.INFO,
+		warning: LightColors.WARNING,
 	},
 };

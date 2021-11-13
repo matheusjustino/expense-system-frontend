@@ -38,12 +38,12 @@ export const Aside: React.FC = () => {
 					Dashboard
 				</MenuItemLink>
 
-				<MenuItemLink to="/dashboard">
+				<MenuItemLink to="/list/entry-balance">
 					<MdArrowUpward />
 					Entradas
 				</MenuItemLink>
 
-				<MenuItemLink to="/dashboard/list">
+				<MenuItemLink to="/list/exit-balance">
 					<MdArrowDownward />
 					Saidas
 				</MenuItemLink>

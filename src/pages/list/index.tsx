@@ -1,4 +1,29 @@
-import React from 'react';
+import React, {
+	useMemo,
+	useCallback,
+	useState,
+	useEffect,
+	ChangeEvent,
+} from 'react';
+import { useParams } from 'react-router';
+
+// INTERFACES
+import { PageData } from '../../interfaces/page-data.interface';
+import { ListData } from '../../interfaces/list-data.interface';
+import { ListPageData } from '../../interfaces/list-page-data.interface';
+
+// ENUMS
+import { ListDataFrequency } from '../../enums/list-data-frequency.enum';
+import { DarkColors } from '../../enums/dark-colors.enum';
+
+// UTILS
+import { FormatCurrency } from '../../utils/format-currency.utils';
+import { FormatDate } from '../../utils/format-date.utils';
+import { MonthsValues } from '../../utils/months.utils';
+
+// MOCKS
+import { gains } from '../../repositories/gains';
+import { expenses } from '../../repositories/expenses';
 
 // STYLES
 import { Container, Content, Filters } from './styles';
@@ -8,21 +33,108 @@ import { ContentHeader } from '../../components/content-header';
 import { SelectInput } from '../../components/select-input';
 import { HistoryFinanceCard } from '../../components/history-finance-card';
 
+interface ListPageProps {
+	type: string;
+}
+
 export const ListPage: React.FC = () => {
-	const months = [
-		{
-			value: 1,
-			label: 'Janeiro',
-		},
-		{
-			value: 2,
-			label: 'Fevereiro',
-		},
-		{
-			value: 3,
-			label: 'Março',
-		},
-	];
+	const [data, setData] = useState<ListPageData[]>([]);
+	const [frequencyFilterSelected, setFrequencyFilterSelected] = useState([
+		ListDataFrequency.RECURRENT,
+		ListDataFrequency.OCCASIONAL,
+	]);
+	const [monthFilterSelected, setMonthFilterSelected] = useState<string>(
+		String(new Date().getMonth() + 1),
+	);
+	const [yearFilterSelected, setYearFilterSelected] = useState<string>(
+		String(new Date().getFullYear()),
+	);
+
+	const params = useParams() as ListPageProps;
+	const { type } = params;
+
+	const pageData: PageData = useMemo(() => {
+		return type === 'entry-balance'
+			? {
+					text: 'Entradas',
+					lineColor: DarkColors.INFO,
+					data: gains,
+			  }
+			: {
+					text: 'Saídas',
+					lineColor: DarkColors.WARNING,
+					data: expenses,
+			  };
+	}, [type]);
+
+	const months = useMemo(() => MonthsValues, []);
+
+	useEffect((): void => {
+		const apiResponse = pageData.data
+			.filter((item) => {
+				const date = new Date(item.date);
+				const month = `${date.getMonth() + 1}`;
+				const year = `${date.getFullYear()}`;
+
+				return (
+					month === monthFilterSelected &&
+					year === yearFilterSelected &&
+					frequencyFilterSelected.includes(item.frequency)
+				);
+			})
+			.map((item) => {
+				const response: ListPageData = buildApiResponse(item);
+				return response;
+			});
+
+		setData(apiResponse);
+	}, [
+		pageData.data,
+		monthFilterSelected,
+		yearFilterSelected,
+		frequencyFilterSelected,
+	]);
+
+	const handleChangeMonthSelect = (
+		event: ChangeEvent<HTMLSelectElement>,
+	): void => {
+		setMonthFilterSelected(event.target.value);
+	};
+
+	const handleChangeYearSelect = (
+		event: ChangeEvent<HTMLSelectElement>,
+	): void => {
+		setYearFilterSelected(event.target.value);
+	};
+
+	const handleChangeFrequencyFilter = (
+		frequency: ListDataFrequency,
+	): void => {
+		const alreadySelected = frequencyFilterSelected.includes(frequency);
+		if (alreadySelected) {
+			setFrequencyFilterSelected(
+				frequencyFilterSelected.filter((item) => item !== frequency),
+			);
+		} else {
+			setFrequencyFilterSelected([...frequencyFilterSelected, frequency]);
+		}
+	};
+
+	const buildApiResponse = useCallback((item: ListData): ListPageData => {
+		const response: ListPageData = {
+			id: `${Math.random() * pageData.data.length}`,
+			description: item.description,
+			amountFormatted: FormatCurrency(Number(item.amount)),
+			frequency: item.frequency,
+			dataFormatted: FormatDate(item.date),
+			tagColor:
+				item.frequency === ListDataFrequency.RECURRENT
+					? DarkColors.SUCCESS
+					: DarkColors.WARNING,
+		};
+
+		return response;
+	}, []);
 
 	const years = [
 		{
@@ -33,46 +145,71 @@ export const ListPage: React.FC = () => {
 			value: 2021,
 			label: '2021',
 		},
+		{
+			value: 2022,
+			label: '2022',
+		},
 	];
 
 	return (
 		<Container>
-			<ContentHeader title="Saídas" lineColor="#e44c4e">
-				{/* #e44c4e #f7931b*/}
-				<SelectInput options={months} />
-				<SelectInput options={years} />
+			<ContentHeader title={pageData.text} lineColor={pageData.lineColor}>
+				<SelectInput
+					onChange={handleChangeMonthSelect}
+					defaultValue={monthFilterSelected}
+					options={months}
+				/>
+				<SelectInput
+					onChange={handleChangeYearSelect}
+					defaultValue={yearFilterSelected}
+					options={years}
+				/>
 			</ContentHeader>
 
 			<Filters>
 				<button
 					type="button"
-					className="tag-filter tag-filter-recurrent"
+					className={`tag-filter tag-filter-recurrent ${
+						frequencyFilterSelected.includes(
+							ListDataFrequency.RECURRENT,
+						) && 'tag-actived'
+					}`}
+					onClick={() =>
+						handleChangeFrequencyFilter(ListDataFrequency.RECURRENT)
+					}
 				>
 					Recorrentes
 				</button>
 
 				<button
 					type="button"
-					className="tag-filter tag-filter-eventual"
+					className={`tag-filter tag-filter-eventual ${
+						frequencyFilterSelected.includes(
+							ListDataFrequency.OCCASIONAL,
+						) && 'tag-actived'
+					}`}
+					onClick={() =>
+						handleChangeFrequencyFilter(
+							ListDataFrequency.OCCASIONAL,
+						)
+					}
 				>
 					Eventuais
 				</button>
 			</Filters>
 
 			<Content>
-				<HistoryFinanceCard
-					tagColor="#e44c4e"
-					title="Conta de Luz"
-					subTitle="12/11/2021"
-					amount="R$ 125,00"
-				/>
-
-				<HistoryFinanceCard
-					tagColor="#e44c4e"
-					title="Conta de Internet"
-					subTitle="12/11/2021"
-					amount="R$ 100,00"
-				/>
+				{data.map((item) => {
+					return (
+						<HistoryFinanceCard
+							key={item.id}
+							tagColor={item.tagColor}
+							title={item.description}
+							subTitle={item.dataFormatted}
+							amount={item.amountFormatted}
+						/>
+					);
+				})}
 			</Content>
 		</Container>
 	);

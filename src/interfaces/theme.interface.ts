@@ -1,22 +1,4 @@
 export interface Theme {
-	colors: {
-		background: string;
-		text: string;
-		primary: {
-			main: string;
-			dark: string;
-			light: string;
-			text: string;
-		};
-		danger: {
-			main: string;
-			dark: string;
-			text: string;
-		};
-	};
-}
-
-export interface ThemeV2 {
 	title: string;
 	colors: {
 		primary: string;
