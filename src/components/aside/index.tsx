@@ -8,6 +8,7 @@ import {
 
 // LOGO
 import logoImg from '../../assets/images/logo.svg';
+import { useAuth } from '../../contexts/auth.context';
 
 // STYLES
 import {
@@ -17,13 +18,10 @@ import {
 	Title,
 	MenuContainer,
 	MenuItemLink,
-	MenuItemButton,
 } from './styles';
 
 export const Aside: React.FC = () => {
-	const handleExitApp = () => {
-		localStorage.clear();
-	};
+	const { signOut } = useAuth();
 
 	return (
 		<Container>
@@ -48,10 +46,10 @@ export const Aside: React.FC = () => {
 					Saidas
 				</MenuItemLink>
 
-				<MenuItemButton href="/" onClick={handleExitApp}>
+				<MenuItemLink to="/" onClick={signOut}>
 					<MdExitToApp />
 					Sair
-				</MenuItemButton>
+				</MenuItemLink>
 			</MenuContainer>
 		</Container>
 	);
