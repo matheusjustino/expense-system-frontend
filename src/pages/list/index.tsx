@@ -43,11 +43,11 @@ export const ListPage: React.FC = () => {
 		ListDataFrequency.RECURRENT,
 		ListDataFrequency.OCCASIONAL,
 	]);
-	const [monthFilterSelected, setMonthFilterSelected] = useState<string>(
-		String(new Date().getMonth() + 1),
+	const [monthFilterSelected, setMonthFilterSelected] = useState<number>(
+		new Date().getMonth() + 1,
 	);
-	const [yearFilterSelected, setYearFilterSelected] = useState<string>(
-		String(new Date().getFullYear()),
+	const [yearFilterSelected, setYearFilterSelected] = useState<number>(
+		new Date().getFullYear(),
 	);
 
 	const params = useParams() as ListPageProps;
@@ -57,7 +57,7 @@ export const ListPage: React.FC = () => {
 		return type === 'entry-balance'
 			? {
 					text: 'Entradas',
-					lineColor: DarkColors.INFO,
+					lineColor: DarkColors.SUCCESS,
 					data: gains,
 			  }
 			: {
@@ -73,8 +73,8 @@ export const ListPage: React.FC = () => {
 		const apiResponse = pageData.data
 			.filter((item) => {
 				const date = new Date(item.date);
-				const month = `${date.getMonth() + 1}`;
-				const year = `${date.getFullYear()}`;
+				const month = date.getMonth() + 1;
+				const year = date.getFullYear();
 
 				return (
 					month === monthFilterSelected &&
@@ -98,13 +98,13 @@ export const ListPage: React.FC = () => {
 	const handleChangeMonthSelect = (
 		event: ChangeEvent<HTMLSelectElement>,
 	): void => {
-		setMonthFilterSelected(event.target.value);
+		setMonthFilterSelected(Number(event.target.value));
 	};
 
 	const handleChangeYearSelect = (
 		event: ChangeEvent<HTMLSelectElement>,
 	): void => {
-		setYearFilterSelected(event.target.value);
+		setYearFilterSelected(Number(event.target.value));
 	};
 
 	const handleChangeFrequencyFilter = (
