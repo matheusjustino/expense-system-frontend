@@ -1,23 +1,170 @@
-import React from 'react';
+import React, {
+	useState,
+	useEffect,
+	useRef,
+	ChangeEvent,
+	MouseEvent,
+} from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // COMPONENTS
-import { SignInPageRoot } from './components/signin-page-root';
-import { Hero } from '../../components/hero';
-import { SignInForm } from './components/signin-form';
+import { AuthHero } from '../../components/auth-hero';
+
+// STYLES
+import {
+	SignInPageRoot,
+	SignInTitle,
+	Form,
+	Row,
+	InputRoot,
+	Span,
+	InputWrapper,
+	Button,
+	LinkButton,
+} from './styles';
 
 // IMAGES
 import HeroImg from '../../assets/images/undraw_wallet.svg';
 
+// INTERFACES
+import { Login } from '../../interfaces/login.interface';
+
+// CONTEXT
+import { useAuth } from '../../contexts/auth.context';
+
 export const SignInPage: React.FC = () => {
+	const buildLoginForm = (): Login => {
+		return {
+			email: 'a@a.com',
+			password: '123',
+		} as Login;
+	};
+
+	const [loginForm, setLoginForm] = useState<Login>(buildLoginForm());
+	const isMounted = useRef(true);
+	const navigate = useNavigate();
+
+	const { signIn } = useAuth();
+
+	useEffect(() => {
+		if (isMounted.current) {
+			return () => {
+				isMounted.current = false;
+			};
+		}
+	}, []);
+
+	const setEmail = (e: ChangeEvent<HTMLInputElement>): void => {
+		setLoginForm((prevState) => {
+			return {
+				password: prevState.password,
+				email: e.target.value,
+			};
+		});
+	};
+
+	const setPassword = (e: ChangeEvent<HTMLInputElement>): void => {
+		setLoginForm((prevState) => {
+			return {
+				password: e.target.value,
+				email: prevState.email,
+			};
+		});
+	};
+
+	const verifyInputs = (): boolean => {
+		if (!!!loginForm.email) {
+			console.log('campo email vazio');
+			return false;
+		}
+
+		if (!!!loginForm.password) {
+			console.log('campo password vazio');
+			return false;
+		}
+
+		return true;
+	};
+
+	const handleSubmit = async (
+		e: MouseEvent<HTMLButtonElement>,
+	): Promise<void> => {
+		e.preventDefault();
+
+		if (!verifyInputs()) {
+			console.log('form com problema');
+			return;
+		}
+
+		await signIn(loginForm);
+		setLoginForm(buildLoginForm());
+		navigate('/dashboard');
+		console.log('form enviado');
+	};
+
 	return (
 		<SignInPageRoot className="container">
 			<div className="row">
 				<div className="col-lg-6">
-					<Hero img={HeroImg} />
+					<AuthHero img={HeroImg} />
 				</div>
 
 				<div className="col-lg-6">
-					<SignInForm />
+					<SignInTitle>
+						<h2>CONTROLE SEUS GASTOS</h2>
+					</SignInTitle>
+
+					<Form className="container">
+						<Row className="row mb-3">
+							<InputRoot className="input-group">
+								<div className="input-group-prepend">
+									<Span
+										className="input-group-text"
+										id="inputGroup-sizing-default"
+									>
+										Email
+									</Span>
+								</div>
+								<InputWrapper
+									value={loginForm.email}
+									onChange={setEmail}
+									type="email"
+									className="form-control"
+								/>
+							</InputRoot>
+						</Row>
+
+						<Row className="row mb-3">
+							<InputRoot className="input-group">
+								<div className="input-group-prepend">
+									<Span
+										className="input-group-text"
+										id="inputGroup-sizing-default"
+									>
+										Senha
+									</Span>
+								</div>
+								<InputWrapper
+									value={loginForm.password}
+									onChange={setPassword}
+									type="password"
+									className="form-control"
+								/>
+							</InputRoot>
+						</Row>
+
+						<Row className="row mb-3">
+							<Button className="btn" onClick={handleSubmit}>
+								Entrar
+							</Button>
+						</Row>
+
+						<Row className="row">
+							<LinkButton className="btn" to="/signup">
+								Criar Conta
+							</LinkButton>
+						</Row>
+					</Form>
 				</div>
 			</div>
 		</SignInPageRoot>

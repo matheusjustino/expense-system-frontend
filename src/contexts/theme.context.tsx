@@ -6,6 +6,7 @@ import { Theme } from '../interfaces/theme.interface';
 
 // ENUMS
 import { ThemeNames } from '../enums/theme-names.enum';
+import { LocalStorageKeys } from '../enums/local-storage-keys.enum';
 
 // THEMES
 import { DarkTheme, LightTheme } from '../assets/styles/themes';
@@ -15,22 +16,30 @@ interface defaultThemeContext {
 	toggleTheme: () => void;
 }
 
-const allThemes = {
-	light: LightTheme,
-	dark: DarkTheme,
-};
-
 const ThemeContext = createContext({} as defaultThemeContext);
 
 export const ThemeProvider: React.FC = ({ children }) => {
-	const [isLightTheme, setIsLightTheme] = useState(true);
+	const [theme, setTheme] = useState<Theme>(() => {
+		const localTheme = localStorage.getItem(LocalStorageKeys.THEME);
+		const initTheme = !!localTheme ? JSON.parse(localTheme) : LightTheme;
 
-	const theme = isLightTheme
-		? allThemes[ThemeNames.LIGHT]
-		: allThemes[ThemeNames.DARK];
+		return initTheme;
+	});
 
 	const toggleTheme = () => {
-		setIsLightTheme((isLightTheme) => !isLightTheme);
+		if (theme.title === ThemeNames.LIGHT) {
+			localStorage.setItem(
+				LocalStorageKeys.THEME,
+				JSON.stringify(DarkTheme),
+			);
+			setTheme(DarkTheme);
+		} else {
+			localStorage.setItem(
+				LocalStorageKeys.THEME,
+				JSON.stringify(LightTheme),
+			);
+			setTheme(LightTheme);
+		}
 	};
 
 	const themeContext = {

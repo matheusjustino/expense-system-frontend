@@ -44,7 +44,6 @@ export const PieChart: React.FC<PieChartProps> = ({ data }) => {
 					<PieChartRc>
 						<Pie data={data} dataKey="percent">
 							{data.map((indicator, index) => {
-								console.log(indicator);
 								return (
 									<Cell key={index} fill={indicator.color} />
 								);
