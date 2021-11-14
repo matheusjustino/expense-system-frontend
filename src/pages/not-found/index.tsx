@@ -1,10 +1,7 @@
 import React from 'react';
 
-// COMPONENTS
-import { Root } from './components/root';
-import { LinkButton } from '../../components/link-button';
-import { Error404 } from './components/error-404';
-import { ErrorMsg } from './components/error-message';
+// STYLES
+import { Root, Error404, ErrorMsg, LinkButton } from './styles';
 
 interface PageNotFoundProps {
 	to?: string;

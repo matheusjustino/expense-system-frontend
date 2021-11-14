@@ -3,12 +3,18 @@ import React, { useState } from 'react';
 // CONTEXT
 import { useTheme } from '../../contexts/theme.context';
 
+// ENUMS
+import { ThemeNames } from '../../enums/theme-names.enum';
+
 // COMPONENTS
 import { Container, ToggleLabel, ToggleSelector } from './styles';
 
 export const Toggle: React.FC = () => {
-	const [checked, setChecked] = useState<boolean>(false);
-	const { toggleTheme } = useTheme();
+	const { theme, toggleTheme } = useTheme();
+
+	const [checked, setChecked] = useState<boolean>(
+		() => theme.title !== ThemeNames.LIGHT,
+	);
 
 	const handleSwitch = () => {
 		toggleTheme();
