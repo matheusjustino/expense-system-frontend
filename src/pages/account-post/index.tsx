@@ -155,6 +155,7 @@ export const AccountPost: React.FC = () => {
 									</SpanWrapper>
 								</div>
 								<InputWrapper
+									maxLength={62}
 									className="form-control"
 									type="text"
 									value={description}
