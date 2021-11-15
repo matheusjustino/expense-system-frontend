@@ -4,6 +4,7 @@ import {
 	MdArrowUpward,
 	MdArrowDownward,
 	MdExitToApp,
+	MdNoteAdd,
 } from 'react-icons/md';
 
 // LOGO
@@ -34,6 +35,11 @@ export const Aside: React.FC = () => {
 				<MenuItemLink to="/dashboard">
 					<MdDashboard />
 					Dashboard
+				</MenuItemLink>
+
+				<MenuItemLink to="/register/new">
+					<MdNoteAdd />
+					Registrar
 				</MenuItemLink>
 
 				<MenuItemLink to="/list/entry-balance">
