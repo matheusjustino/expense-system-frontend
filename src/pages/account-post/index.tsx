@@ -5,9 +5,21 @@ import DatePicker, { registerLocale } from 'react-datepicker';
 import ptBR from 'date-fns/locale/pt-BR';
 registerLocale('ptBR', ptBR);
 
+// SERVICES
+import { createAccountPost } from '../../services/account-post.service';
+
 // ENUM
 import { DarkColors } from '../../enums/dark-colors.enum';
 import { ListDataFrequency } from '../../enums/list-data-frequency.enum';
+import { LocalStorageKeys } from '../../enums/local-storage-keys.enum';
+
+// TYPES
+import { AccountPostFrequency } from '../../types/account-post-frequency.type';
+import { AccountPostType } from '../../types/account-post-type.type';
+
+// ENUMS
+import { CreateAccountPost } from '../../interfaces/create-account-post.interface';
+import { AccountInfo } from '../../interfaces/account-info.interface';
 
 // COMPONENTS
 import { ContentHeader } from '../../components/content-header';
@@ -26,12 +38,16 @@ import {
 } from './styles';
 
 export const AccountPost: React.FC = () => {
+	const buildForm = useCallback(() => {
+		setDescription('');
+		setStartDate(new Date());
+	}, []);
+
 	const [description, setDescription] = useState<string>('');
-	const [amount, setAmount] = useState<number | undefined>(undefined);
-	const [type, setType] = useState('entry');
-	const [frequency, setFrequency] = useState<string>(
-		ListDataFrequency['OCCASIONAL'],
-	);
+	const [amount, setAmount] = useState<number>(0);
+	const [type, setType] = useState<AccountPostType>('entry');
+	const [frequency, setFrequency] =
+		useState<AccountPostFrequency>('recurrent');
 	const [startDate, setStartDate] = useState(new Date());
 
 	const handleChangeAmount = (value: string | undefined) => {
@@ -57,12 +73,12 @@ export const AccountPost: React.FC = () => {
 	const frequencyOptions = useMemo(
 		() => [
 			{
-				value: ListDataFrequency.OCCASIONAL,
-				label: 'Eventual',
-			},
-			{
 				value: ListDataFrequency.RECURRENT,
 				label: 'Recorrente',
+			},
+			{
+				value: ListDataFrequency.OCCASIONAL,
+				label: 'Eventual',
 			},
 		],
 		[],
@@ -113,14 +129,14 @@ export const AccountPost: React.FC = () => {
 
 	const handleChangeTypeSelect = useCallback(
 		(e: ChangeEvent<HTMLSelectElement>) => {
-			setType(e.target.value);
+			setType(e.target.value as AccountPostType);
 		},
 		[],
 	);
 
 	const handleChangeFrequencySelect = useCallback(
 		(e: ChangeEvent<HTMLSelectElement>) => {
-			setFrequency(e.target.value);
+			setFrequency(e.target.value as AccountPostFrequency);
 		},
 		[],
 	);
@@ -129,10 +145,31 @@ export const AccountPost: React.FC = () => {
 		setStartDate(e);
 	}, []);
 
-	const handleSubmit = () => {
-		if (verifyInput()) {
-			buildToast('success', 'Novo registro');
-			console.log(description, amount, type, frequency, startDate);
+	const handleSubmit = async () => {
+		try {
+			if (verifyInput()) {
+				const localUser = localStorage.getItem(LocalStorageKeys.USER);
+
+				if (localUser) {
+					const accountInfo: AccountInfo = JSON.parse(localUser);
+
+					const payload: CreateAccountPost = {
+						description,
+						amount,
+						type,
+						frequency,
+						date: startDate,
+						userId: accountInfo.id,
+					};
+
+					await createAccountPost(payload);
+
+					buildForm();
+					buildToast('success', 'Novo registro');
+				}
+			}
+		} catch (error) {
+			buildToast('error', error as string);
 		}
 	};
 
@@ -195,7 +232,7 @@ export const AccountPost: React.FC = () => {
 								</div>
 								<SelectInput
 									onChange={handleChangeTypeSelect}
-									defaultValue="entry"
+									defaultValue={type}
 									options={typeOptions}
 								/>
 							</div>
@@ -212,7 +249,7 @@ export const AccountPost: React.FC = () => {
 								</div>
 								<SelectInput
 									onChange={handleChangeFrequencySelect}
-									defaultValue={ListDataFrequency.OCCASIONAL}
+									defaultValue={frequency}
 									options={frequencyOptions}
 								/>
 							</div>

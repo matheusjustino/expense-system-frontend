@@ -25,6 +25,7 @@ import { Register } from '../../interfaces/register.interface';
 
 // CONTEXT
 import { useAuth } from '../../contexts/auth.context';
+import { useToast } from '../../contexts/toast.context';
 
 export const SignUpPage: React.FC = () => {
 	const buildUserForm = (): Register => {
@@ -38,8 +39,8 @@ export const SignUpPage: React.FC = () => {
 	const [userForm, setUserForm] = useState<Register>(buildUserForm());
 
 	const { register } = useAuth();
+	const { buildToast } = useToast();
 	const navigate = useNavigate();
-	const errors = [];
 
 	const setFirstName = (e: ChangeEvent<HTMLInputElement>): void => {
 		setUserForm((prevState) => {
@@ -79,48 +80,43 @@ export const SignUpPage: React.FC = () => {
 
 	const verifyInputs = (): boolean => {
 		if (!!!userForm.firstName) {
-			console.log('campo firstName vazio');
-			errors.push({
-				firstName: 'Inválido',
-			});
+			buildToast('error', 'Campo Nome vazio');
+			return false;
 		}
 
 		if (!!!userForm.lastName) {
-			console.log('campo lastName vazio');
-			errors.push({
-				lastName: 'Inválido',
-			});
+			buildToast('error', 'Campo Sobrenome vazio');
+			return false;
 		}
 
 		if (!!!userForm.email) {
-			console.log('campo email vazio');
-			errors.push({
-				email: 'Inválido',
-			});
+			buildToast('error', 'Campo Email vazio');
+			return false;
 		}
 
 		if (!!!userForm.password) {
-			console.log('campo password vazio');
-			errors.push({
-				password: 'Inválido',
-			});
+			buildToast('error', 'Campo Senha vazio');
+			return false;
 		}
 
-		return errors.length === 0;
+		return true;
 	};
 
 	const handleSubmit = async (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
 
-		if (!verifyInputs()) {
-			console.log('form com problema');
-			return;
-		}
+		if (verifyInputs()) {
+			try {
+				await register(userForm);
+				setUserForm(buildUserForm());
 
-		await register(userForm);
-		setUserForm(buildUserForm());
-		navigate('/');
-		console.log('signup form');
+				buildToast('success', 'Conta criada!');
+
+				navigate('/');
+			} catch (error) {
+				buildToast('error', error as string);
+			}
+		}
 	};
 
 	return (

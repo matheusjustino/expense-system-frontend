@@ -31,12 +31,13 @@ import { Login } from '../../interfaces/login.interface';
 
 // CONTEXT
 import { useAuth } from '../../contexts/auth.context';
+import { useToast } from '../../contexts/toast.context';
 
 export const SignInPage: React.FC = () => {
 	const buildLoginForm = (): Login => {
 		return {
-			email: 'a@a.com',
-			password: '123',
+			email: '',
+			password: '',
 		} as Login;
 	};
 
@@ -45,6 +46,7 @@ export const SignInPage: React.FC = () => {
 	const navigate = useNavigate();
 
 	const { signIn } = useAuth();
+	const { buildToast } = useToast();
 
 	useEffect(() => {
 		if (isMounted.current) {
@@ -74,12 +76,12 @@ export const SignInPage: React.FC = () => {
 
 	const verifyInputs = (): boolean => {
 		if (!!!loginForm.email) {
-			console.log('campo email vazio');
+			buildToast('error', 'Campo email vazio');
 			return false;
 		}
 
 		if (!!!loginForm.password) {
-			console.log('campo password vazio');
+			buildToast('error', 'Campo senha vazio');
 			return false;
 		}
 
@@ -92,14 +94,19 @@ export const SignInPage: React.FC = () => {
 		e.preventDefault();
 
 		if (!verifyInputs()) {
-			console.log('form com problema');
 			return;
 		}
 
-		await signIn(loginForm);
-		setLoginForm(buildLoginForm());
-		navigate('/dashboard');
-		console.log('form enviado');
+		try {
+			await signIn(loginForm);
+			setLoginForm(buildLoginForm());
+
+			buildToast('success', 'Logado com sucesso!');
+
+			navigate('/dashboard');
+		} catch (error: any) {
+			buildToast('error', error);
+		}
 	};
 
 	return (
