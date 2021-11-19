@@ -6,6 +6,9 @@ import React, {
 	useState,
 } from 'react';
 
+// SERVICES
+import { api } from '../services/api.service';
+
 // ENUMS
 import { LocalStorageKeys } from '../enums/local-storage-keys.enum';
 
@@ -13,6 +16,9 @@ import { LocalStorageKeys } from '../enums/local-storage-keys.enum';
 import { Login } from '../interfaces/login.interface';
 import { Register } from '../interfaces/register.interface';
 import { User } from '../interfaces/user.interface';
+import { LoginResponse } from '../interfaces/login-response.interface';
+import { AccountInfo } from '../interfaces/account-info.interface';
+import { AxiosError } from 'axios';
 
 interface AuthContextData {
 	user: User | null;
@@ -25,29 +31,12 @@ interface AuthProviderProps {
 	children?: ReactNode;
 }
 
-const usersMock: User[] = [
-	{
-		id: '1',
-		firstName: 'Matheus',
-		lastName: 'Henrique',
-		email: 'a@a.com',
-		password: '123',
-	},
-	{
-		id: '2',
-		firstName: 'Fernandes',
-		lastName: 'Justino',
-		email: 'b@b.com',
-		password: '123',
-	},
-];
-
 export const AuthContext = createContext<AuthContextData>(
 	{} as AuthContextData,
 );
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-	const [user, setUser] = useState<User | null>(null);
+	const [user, setUser] = useState<AccountInfo | null>(null);
 
 	useEffect(() => {
 		if (!user) {
@@ -58,18 +47,32 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 		}
 	}, []);
 
-	const signIn = async (data: Login): Promise<void> => {
-		const apiResult = await usersMock.find((user) => {
-			return user.email === data.email && user.password === data.password;
-		});
+	useEffect(() => {
+		const token = localStorage.getItem(LocalStorageKeys.USER_TOKEN);
 
-		if (apiResult) {
-			localStorage.setItem(LocalStorageKeys.USER_TOKEN, 'usertoken');
+		if (token) {
+			api.defaults.headers.common.authorization = `Bearer ${token}`;
+		}
+	}, []);
+
+	const signIn = async (data: Login): Promise<void> => {
+		try {
+			const apiResult = await api.post<LoginResponse>('auth/login', data);
+			api.defaults.headers.common.authorization = `Bearer ${apiResult.data.token}`;
+
+			localStorage.setItem(
+				LocalStorageKeys.USER_TOKEN,
+				apiResult.data.token,
+			);
 			localStorage.setItem(
 				LocalStorageKeys.USER,
-				JSON.stringify(apiResult),
+				JSON.stringify(apiResult.data.user),
 			);
-			setUser(apiResult);
+
+			setUser(apiResult.data.user);
+		} catch (error: any) {
+			const err: AxiosError = error;
+			throw err.response?.data.error.message;
 		}
 	};
 
@@ -79,10 +82,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 	};
 
 	const register = async (data: Register): Promise<void> => {
-		await usersMock.push({
-			...data,
-			id: `${usersMock.length + 1}`,
-		});
+		try {
+			await api.post('auth/register', data);
+		} catch (error: any) {
+			const err: AxiosError = error;
+			throw err.response?.data.error.message;
+		}
 	};
 
 	const authProviderData: AuthContextData = {

@@ -6,6 +6,9 @@ import React, {
 	ChangeEvent,
 } from 'react';
 
+// SERVICES
+import { getDashboard } from '../../services/account-post.service';
+
 // UTILS
 import { MonthsValues } from '../../utils/months.utils';
 
@@ -23,9 +26,6 @@ import { DarkColors } from '../../enums/dark-colors.enum';
 
 // STYLES
 import { Container, SpinnerContainer, Content } from './styles';
-
-// MOCKS
-import { fakeApi } from '../../services/fake-dashboard.service';
 
 // COMPONENTS
 import { ContentHeader } from '../../components/content-header';
@@ -69,7 +69,10 @@ export const DashboardPage: React.FC = () => {
 				historyData,
 				relationExpensesRecurrentEventual,
 				relationGainsRecurrentEventual,
-			} = await fakeApi.get(monthSelected, yearSelected, months);
+			} = await getDashboard({
+				month: monthSelected,
+				year: yearSelected,
+			});
 
 			const balance = totalGains - totalExpenses;
 

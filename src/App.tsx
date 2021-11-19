@@ -3,6 +3,7 @@ import React from 'react';
 import GlobalStyleComposed from './assets/styles/global-style';
 
 // CONTEXTS
+import { ToastProvider } from './contexts/toast.context';
 import { ThemeProvider } from './contexts/theme.context';
 import { AuthProvider } from './contexts/auth.context';
 
@@ -11,12 +12,14 @@ import { Routes } from './routes/router';
 
 const App: React.FC = () => {
 	return (
-		<ThemeProvider>
-			<AuthProvider>
-				<GlobalStyleComposed />
-				<Routes />
-			</AuthProvider>
-		</ThemeProvider>
+		<ToastProvider>
+			<ThemeProvider>
+				<AuthProvider>
+					<GlobalStyleComposed />
+					<Routes />
+				</AuthProvider>
+			</ThemeProvider>
+		</ToastProvider>
 	);
 };
 

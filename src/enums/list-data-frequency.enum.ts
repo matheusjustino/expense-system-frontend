@@ -1,4 +1,4 @@
 export enum ListDataFrequency {
-	RECURRENT = 'recorrente',
-	OCCASIONAL = 'eventual',
+	RECURRENT = 'recurrent',
+	OCCASIONAL = 'occasional',
 }
