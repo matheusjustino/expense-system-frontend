@@ -7,9 +7,11 @@ import React, {
 } from 'react';
 import { useParams } from 'react-router';
 
+// SERVICES
+import { getRegisters } from '../../services/account-post.service';
+
 // INTERFACES
-import { PageData } from '../../interfaces/page-data.interface';
-import { ListData } from '../../interfaces/list-data.interface';
+import { ContentHeaderData } from '../../interfaces/content-header-data.interface';
 import { ListPageData } from '../../interfaces/list-page-data.interface';
 
 // ENUMS
@@ -21,10 +23,6 @@ import { FormatCurrency } from '../../utils/format-currency.utils';
 import { FormatDate } from '../../utils/format-date.utils';
 import { MonthsValues } from '../../utils/months.utils';
 
-// MOCKS
-import { gains } from '../../repositories/gains';
-import { expenses } from '../../repositories/expenses';
-
 // STYLES
 import { Container, Content, Filters } from './styles';
 
@@ -32,12 +30,21 @@ import { Container, Content, Filters } from './styles';
 import { ContentHeader } from '../../components/content-header';
 import { SelectInput } from '../../components/select-input';
 import { HistoryFinanceCard } from '../../components/history-finance-card';
+import { FindAccountPostResponse } from '../../interfaces/find-account-post-response.interface';
+import { SpinnerContainer } from '../dashboard/styles';
+import { Spinner } from '../../components/spinner';
+import { useTheme } from '../../contexts/theme.context';
+import { Theme } from '../../interfaces/theme.interface';
 
 interface ListPageProps {
 	type: string;
 }
 
 export const ListPage: React.FC = () => {
+	const [isLoading, setIsLoading] = useState(true);
+	const [apiResponse, setApiResponse] = useState<FindAccountPostResponse[]>(
+		[],
+	);
 	const [data, setData] = useState<ListPageData[]>([]);
 	const [frequencyFilterSelected, setFrequencyFilterSelected] = useState([
 		ListDataFrequency.RECURRENT,
@@ -50,50 +57,55 @@ export const ListPage: React.FC = () => {
 		new Date().getFullYear(),
 	);
 
+	const { theme } = useTheme();
 	const params = useParams() as ListPageProps;
 	const { type } = params;
 
-	const pageData: PageData = useMemo(() => {
-		return type === 'entry-balance'
-			? {
-					text: 'Entradas',
-					lineColor: DarkColors.SUCCESS,
-					data: gains,
-			  }
-			: {
-					text: 'Saídas',
-					lineColor: DarkColors.WARNING,
-					data: expenses,
-			  };
-	}, [type]);
-
-	const months = useMemo(() => MonthsValues, []);
-
 	useEffect((): void => {
-		const apiResponse = pageData.data
-			.filter((item) => {
-				const date = new Date(item.date);
-				const month = date.getMonth() + 1;
-				const year = date.getFullYear();
+		// Carregando os dados da API
+		(async () => {
+			!isLoading && setIsLoading(true);
 
-				return (
-					month === monthFilterSelected &&
-					year === yearFilterSelected &&
-					frequencyFilterSelected.includes(item.frequency)
-				);
-			})
-			.map((item) => {
-				const response: ListPageData = buildApiResponse(item);
-				return response;
+			const apiResponse = await getRegisters({
+				month: monthFilterSelected,
+				year: yearFilterSelected,
+				type: type === 'entry-balance' ? 'entry' : 'exit',
+				frequency: frequencyFilterSelected,
 			});
 
-		setData(apiResponse);
+			setApiResponse(apiResponse);
+			setIsLoading(false);
+		})();
 	}, [
-		pageData.data,
+		type,
 		monthFilterSelected,
 		yearFilterSelected,
 		frequencyFilterSelected,
 	]);
+
+	useEffect((): void => {
+		// Mapeando os dados da tela
+		const listPageData = apiResponse.map((item) => {
+			const response: ListPageData = buildApiResponse(item, theme);
+			return response;
+		});
+
+		setData(listPageData);
+	}, [apiResponse, theme]);
+
+	const months = useMemo(() => MonthsValues, []);
+
+	const contentHeaderData: ContentHeaderData = useMemo(() => {
+		return type === 'entry-balance'
+			? {
+					text: 'Entradas',
+					lineColor: DarkColors.SUCCESS,
+			  }
+			: {
+					text: 'Saídas',
+					lineColor: DarkColors.WARNING,
+			  };
+	}, [type]);
 
 	const handleChangeMonthSelect = (
 		event: ChangeEvent<HTMLSelectElement>,
@@ -120,21 +132,24 @@ export const ListPage: React.FC = () => {
 		}
 	};
 
-	const buildApiResponse = useCallback((item: ListData): ListPageData => {
-		const response: ListPageData = {
-			id: `${Math.random() * pageData.data.length}`,
-			description: item.description,
-			amountFormatted: FormatCurrency(Number(item.amount)),
-			frequency: item.frequency,
-			dataFormatted: FormatDate(item.date),
-			tagColor:
-				item.frequency === ListDataFrequency.RECURRENT
-					? DarkColors.SUCCESS
-					: DarkColors.WARNING,
-		};
+	const buildApiResponse = useCallback(
+		(item: FindAccountPostResponse, { colors }: Theme): ListPageData => {
+			const response: ListPageData = {
+				id: item.id,
+				description: item.description,
+				amountFormatted: FormatCurrency(Number(item.amount)),
+				frequency: item.frequency,
+				dataFormatted: FormatDate(item.date),
+				tagColor:
+					item.frequency === ListDataFrequency.RECURRENT
+						? colors.success
+						: colors.warning,
+			};
 
-		return response;
-	}, []);
+			return response;
+		},
+		[],
+	);
 
 	const years = [
 		{
@@ -153,7 +168,10 @@ export const ListPage: React.FC = () => {
 
 	return (
 		<Container>
-			<ContentHeader title={pageData.text} lineColor={pageData.lineColor}>
+			<ContentHeader
+				title={contentHeaderData.text}
+				lineColor={contentHeaderData.lineColor}
+			>
 				<SelectInput
 					onChange={handleChangeMonthSelect}
 					defaultValue={monthFilterSelected}
@@ -199,17 +217,23 @@ export const ListPage: React.FC = () => {
 			</Filters>
 
 			<Content>
-				{data.map((item) => {
-					return (
-						<HistoryFinanceCard
-							key={item.id}
-							tagColor={item.tagColor}
-							title={item.description}
-							subTitle={item.dataFormatted}
-							amount={item.amountFormatted}
-						/>
-					);
-				})}
+				{!isLoading ? (
+					data.map((item) => {
+						return (
+							<HistoryFinanceCard
+								key={item.id}
+								tagColor={item.tagColor}
+								title={item.description}
+								subTitle={item.dataFormatted}
+								amount={item.amountFormatted}
+							/>
+						);
+					})
+				) : (
+					<SpinnerContainer>
+						<Spinner />
+					</SpinnerContainer>
+				)}
 			</Content>
 		</Container>
 	);

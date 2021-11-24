@@ -12,6 +12,8 @@ import { BarChartBoxData } from '../interfaces/bar-chart-box-data.interface';
 import { DarkColors } from '../enums/dark-colors.enum';
 import { GetDashboardDataResponse } from '../interfaces/get-dashboard-data-response.interface';
 import { DashboardApiResult } from '../interfaces/dashboard-api-result.interface';
+import { FindAccountPostResponse } from '../interfaces/find-account-post-response.interface';
+import { ListRegisterQuery } from '../interfaces/list-registers-query.interface';
 
 const accountPostBasePath = Object.freeze('account-posts');
 
@@ -127,6 +129,32 @@ export const getDashboard = async (
 		};
 
 		return response;
+	} catch (error: any) {
+		const err: AxiosError = error;
+		throw err.response?.data.error.message;
+	}
+};
+
+export const getRegisters = async (
+	query: ListRegisterQuery,
+): Promise<FindAccountPostResponse[]> => {
+	try {
+		const localToken = localStorage.getItem(LocalStorageKeys.USER_TOKEN);
+
+		const config: AxiosRequestConfig = {
+			params: query,
+			...(!!localToken && {
+				headers: {
+					authorization: `Bearer ${localToken}`,
+				},
+			}),
+		};
+
+		const apiResult = await api.get<FindAccountPostResponse[]>(
+			accountPostBasePath,
+			config,
+		);
+		return apiResult.data;
 	} catch (error: any) {
 		const err: AxiosError = error;
 		throw err.response?.data.error.message;
