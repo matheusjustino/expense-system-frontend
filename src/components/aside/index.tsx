@@ -33,7 +33,7 @@ import {
 export const Aside: React.FC = () => {
 	const { signOut } = useAuth();
 
-	const [toggleMenuIsOpened, setToggleMenuIsOpened] = useState(true);
+	const [toggleMenuIsOpened, setToggleMenuIsOpened] = useState(false);
 
 	const handleToggleMenu = () => {
 		setToggleMenuIsOpened(!toggleMenuIsOpened);

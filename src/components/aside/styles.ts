@@ -23,6 +23,8 @@ export const Container = styled.div<ContainerProps>`
 		position: fixed;
 		z-index: 2;
 
+		transition: height 0.4s ease-out;
+
 		height: ${(props) => (props.menuIsOpen ? '100vh' : '4.375rem')};
 		overflow: hidden;
 

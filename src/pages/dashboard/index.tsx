@@ -202,25 +202,22 @@ export const DashboardPage: React.FC = () => {
 
 	return (
 		<Container>
-			{!isLoading ? (
-				<React.Fragment>
-					<ContentHeader
-						title="Dashboard"
-						lineColor={DarkColors.INFO}
-					>
-						<SelectInput
-							onChange={handleChangeMonthSelect}
-							defaultValue={monthSelected}
-							options={months}
-						/>
-						<SelectInput
-							onChange={handleChangeYearSelect}
-							defaultValue={yearSelected}
-							options={years}
-						/>
-					</ContentHeader>
+			<ContentHeader title="Dashboard" lineColor={DarkColors.INFO}>
+				<SelectInput
+					onChange={handleChangeMonthSelect}
+					defaultValue={monthSelected}
+					options={months}
+				/>
+				<SelectInput
+					onChange={handleChangeYearSelect}
+					defaultValue={yearSelected}
+					options={years}
+				/>
+			</ContentHeader>
 
-					<Content>
+			<Content isLoading={isLoading}>
+				{!isLoading ? (
+					<React.Fragment>
 						<WalletBox
 							title="Saldo"
 							footerLabel="Atualizado com base nas entradas e saídas"
@@ -270,13 +267,13 @@ export const DashboardPage: React.FC = () => {
 							data={totalValues.relationGainsRecurrentEventual}
 							title={`Entradas de ${monthLabel}`}
 						/>
-					</Content>
-				</React.Fragment>
-			) : (
-				<SpinnerContainer>
-					<Spinner />
-				</SpinnerContainer>
-			)}
+					</React.Fragment>
+				) : (
+					<SpinnerContainer>
+						<Spinner />
+					</SpinnerContainer>
+				)}
+			</Content>
 		</Container>
 	);
 };
