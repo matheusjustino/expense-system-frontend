@@ -1,4 +1,20 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+
+const animate = keyframes`
+	0% {
+		transform: translateX(100px);
+		opacity: 0;
+	}
+
+	50% {
+		opacity: 0.3;
+	}
+
+	100% {
+		transform: translateX(0);
+		opacity: 1;
+	}
+`;
 
 interface LegendProps {
 	color: string;
@@ -16,6 +32,16 @@ export const Container = styled.div`
 	color: ${(props) => props.theme.colors.white};
 
 	border-radius: 0.5rem;
+
+	animation: ${animate} 0.5s;
+
+	@media (max-width: 75rem) {
+		display: flex;
+		flex-direction: column;
+
+		width: 100%;
+		height: auto;
+	}
 `;
 
 export const SideLeft = styled.aside`
@@ -55,6 +81,11 @@ export const LegendContainer = styled.ul`
 
 	::-webkit-scrollbar-track {
 		background-color: ${(props) => props.theme.colors.tertiary};
+	}
+
+	@media (max-width: 75rem) {
+		display: flex;
+		max-height: auto;
 	}
 `;
 

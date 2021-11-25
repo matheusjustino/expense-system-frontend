@@ -10,4 +10,14 @@ export const Grid = styled.div`
 		'AS CT';
 
 	height: 100vh;
+	min-width: 19.6875rem;
+
+	@media (max-width: 37.5rem) {
+		grid-template-columns: 100%;
+		grid-template-rows: 4.375rem auto;
+
+		grid-template-areas:
+			'MH'
+			'CT';
+	}
 `;

@@ -142,6 +142,7 @@ export const SignUpPage: React.FC = () => {
 									</Span>
 								</div>
 								<InputWrapper
+									required
 									value={userForm.firstName}
 									onChange={setFirstName}
 									type="text"
@@ -161,6 +162,7 @@ export const SignUpPage: React.FC = () => {
 									</Span>
 								</div>
 								<InputWrapper
+									required
 									value={userForm.lastName}
 									onChange={setLastName}
 									type="text"
@@ -180,6 +182,7 @@ export const SignUpPage: React.FC = () => {
 									</Span>
 								</div>
 								<InputWrapper
+									required
 									value={userForm.email}
 									onChange={setEmail}
 									type="email"
@@ -199,6 +202,7 @@ export const SignUpPage: React.FC = () => {
 									</Span>
 								</div>
 								<InputWrapper
+									required
 									value={userForm.password || ''}
 									onChange={setPassword}
 									type="password"
