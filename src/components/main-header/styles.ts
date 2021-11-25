@@ -13,6 +13,12 @@ export const Container = styled.div`
 	padding: 0 0.625rem;
 
 	border-bottom: 1px solid ${(props) => props.theme.colors.gray};
+
+	@media (max-width: 37.5rem) {
+		#toggle {
+			visibility: hidden;
+		}
+	}
 `;
 
 export const Profile = styled.div`

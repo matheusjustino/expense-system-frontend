@@ -22,7 +22,7 @@ export const Toggle: React.FC = () => {
 	};
 
 	return (
-		<Container>
+		<Container id="toggle">
 			<ToggleLabel>Light</ToggleLabel>
 			<ToggleSelector
 				checked={checked}

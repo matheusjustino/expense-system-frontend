@@ -41,12 +41,13 @@ export const WalletBox: React.FC<WalletBoxProps> = ({
 		<Container color={color}>
 			<span>{title}</span>
 			<h1>
+				<strong>R$ </strong>
 				<CountUp
 					duration={1}
 					delay={0}
 					start={0}
 					end={amount}
-					prefix="R$ "
+					// prefix="R$ "
 					separator="."
 					decimal=","
 					decimals={2}
