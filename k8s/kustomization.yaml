@@ -9,4 +9,4 @@ namespace: expense-system
 images:
 - name: matheusjustino/expense-system-react-app
   newName: matheusjustino/expense-system-react-app
-  newTag: e3584c08b757cd04a4af2af46af66f69a45ddf1f
+  newTag: cd9fdd48406ee3f8a86e001244a9530ce7139390
