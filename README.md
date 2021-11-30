@@ -29,3 +29,11 @@
 ## Emojis
 
 -   `https://www.w3schools.com/charsets/ref_emoji_smileys.asp`
+
+## APP
+
+![Login](./screenshots/login.png) ![Register](./screenshots/register.png)
+![Dashboard](./screenshots/dashboard.png)
+![Account Post](./screenshots/account-post.png)
+![List Entry](./screenshots/list-entry.png)
+![List Exit](./screenshots/list-exit.png)
