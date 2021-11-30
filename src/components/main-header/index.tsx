@@ -3,9 +3,13 @@ import React, { useMemo } from 'react';
 // EMOJIS
 import { Emojis } from '../../utils/emojis.utils';
 
-// COMPONENTS
+// STYLES
 import { Container, Profile, Welcome, UserName } from './styles';
+
+// COMPONENTS
 import { Toggle } from '../toggle';
+
+// CONTEXT
 import { useAuth } from '../../contexts/auth.context';
 
 export const MainHeader: React.FC = () => {

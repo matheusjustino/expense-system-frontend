@@ -133,6 +133,7 @@ export const SignInPage: React.FC = () => {
 									</Span>
 								</div>
 								<InputWrapper
+									required
 									value={loginForm.email}
 									onChange={setEmail}
 									type="email"
@@ -152,6 +153,7 @@ export const SignInPage: React.FC = () => {
 									</Span>
 								</div>
 								<InputWrapper
+									required
 									value={loginForm.password}
 									onChange={setPassword}
 									type="password"

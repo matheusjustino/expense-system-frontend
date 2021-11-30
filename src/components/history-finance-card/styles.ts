@@ -1,4 +1,20 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+
+const animate = keyframes`
+	0% {
+		transform: translateX(-100px);
+		opacity: 0;
+	}
+
+	50% {
+		opacity: 0.3;
+	}
+
+	100% {
+		transform: translateX(0);
+		opacity: 1;
+	}
+`;
 
 interface TagProps {
 	color: string;
@@ -22,6 +38,8 @@ export const Container = styled.li`
 	transition: all 0.3s;
 
 	position: relative;
+
+	animation: ${animate} 0.5s ease-in;
 
 	&:hover {
 		opacity: 0.7;
